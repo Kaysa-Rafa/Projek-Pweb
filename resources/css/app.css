@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hive Workshop Custom Styles */
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    body {
+        @apply antialiased;
+    }
+}
+
+@layer components {
+    /* Buttons */
+    .btn-primary {
+        @apply bg-hive-600 hover:bg-hive-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-hive-500 focus:ring-offset-2;
+    }
+    
+    .btn-secondary {
+        @apply bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+    }
+    
+    .btn-outline {
+        @apply border border-hive-600 text-hive-600 hover:bg-hive-600 hover:text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 dark:border-hive-400 dark:text-hive-400 dark:hover:bg-hive-400 dark:hover:text-white;
+    }
+    
+    /* Cards */
+    .card {
+        @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300;
+    }
+    
+    .card-hover {
+        @apply card transform hover:-translate-y-1;
+    }
+    
+    /* Resource Grid */
+    .resource-grid {
+        @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+    }
+    
+    /* Navigation */
+    .nav-link {
+        @apply text-gray-700 dark:text-gray-300 hover:text-hive-600 dark:hover:text-hive-400 transition-colors duration-200 font-medium;
+    }
+    
+    .nav-link-active {
+        @apply text-hive-600 dark:text-hive-400 border-b-2 border-hive-600 dark:border-hive-400;
+    }
+    
+    /* Badges */
+    .badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    }
+    
+    .badge-primary {
+        @apply badge bg-hive-100 text-hive-800 dark:bg-hive-900 dark:text-hive-200;
+    }
+    
+    .badge-success {
+        @apply badge bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+    }
+    
+    .badge-warning {
+        @apply badge bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+    }
+    
+    .badge-danger {
+        @apply badge bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+    }
+    
+    /* Inputs */
+    .input-primary {
+        @apply block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-gray-900 dark:text-white placeholder-gray-500 focus:border-hive-500 focus:ring-hive-500 focus:outline-none transition-colors duration-200;
+    }
+    
+    /* Loading spinner */
+    .spinner {
+        @apply animate-spin rounded-full h-6 w-6 border-b-2 border-hive-600;
+    }
+}
+
+@layer utilities {
+    /* Text clamp utilities */
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .line-clamp-4 {
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    /* Gradient text */
+    .text-gradient {
+        @apply bg-gradient-to-r from-hive-600 to-purple-600 bg-clip-text text-transparent;
+    }
+}
+
+/* Custom animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Dark mode transitions */
+* {
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
