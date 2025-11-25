@@ -1,5 +1,5 @@
 <?php
-
+// app/Models/Category.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,32 +10,21 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'slug',
-        'description',
-        'parent_id',
-        'resource_count'
+        'name', 'slug', 'description', 'color', 'icon', 
+        'is_active', 'sort_order'
     ];
 
-    // Relationships
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     public function resources()
     {
         return $this->hasMany(Resource::class);
     }
 
-    public function parent()
+    public function getRouteKeyName()
     {
-        return $this->belongsTo(Category::class, 'parent_id');
-    }
-
-    public function children()
-    {
-        return $this->hasMany(Category::class, 'parent_id');
-    }
-
-    // Scopes
-    public function scopeRootCategories($query)
-    {
-        return $query->whereNull('parent_id');
+        return 'slug';
     }
 }

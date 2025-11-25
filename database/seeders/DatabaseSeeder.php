@@ -1,26 +1,20 @@
 <?php
-
+// database/seeders/DatabaseSeeder.php
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         $this->call([
             UserSeeder::class,
-            CategorySeeder::class,
-            TagSeeder::class,
-            ResourceSeeder::class,
-            DownloadSeeder::class,
-            CommentSeeder::class,
         ]);
+
+        $this->command->info('=== Database Seeding Completed ===');
+        $this->command->info('Admin: admin@hiveworkshop.com / password');
+        $this->command->info('Moderator: moderator@hiveworkshop.com / password'); 
+        $this->command->info('User: user@hiveworkshop.com / password');
     }
 }

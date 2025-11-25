@@ -1,51 +1,74 @@
 <?php
-
+// database/seeders/UserSeeder.php - Alternatif
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
-class AdminSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create Admin
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
+        $this->command->info('Cleaning existing users...');
+        
+        // Hapus data lama (hati-hati di production!)
+        DB::table('user_profiles')->delete();
+        DB::table('users')->delete();
+
+        $this->command->info('Creating new users...');
+
+        // Create admin user
+        $admin = User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@hiveworkshop.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
+            'reputation' => 1000,
             'email_verified_at' => now(),
         ]);
 
-        // Create sample users
-        User::create([
-            'name' => 'John Doe',
-            'email' => 'user@example.com',
+        UserProfile::create([
+            'user_id' => $admin->id,
+            'bio' => 'Site Administrator',
+            'location' => 'Internet',
+        ]);
+
+        // Create moderator user
+        $moderator = User::create([
+            'name' => 'Moderator User',
+            'email' => 'moderator@hiveworkshop.com',
             'password' => Hash::make('password'),
-            'role' => 'user',
+            'role' => 'moderator',
+            'reputation' => 500,
             'email_verified_at' => now(),
         ]);
 
-        User::create([
-            'name' => 'Jane Smith',
-            'email' => 'jane@example.com',
+        UserProfile::create([
+            'user_id' => $moderator->id,
+            'bio' => 'Community Moderator',
+        ]);
+
+        // Create regular user
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => 'user@hiveworkshop.com',
             'password' => Hash::make('password'),
             'role' => 'user',
+            'reputation' => 100,
             'email_verified_at' => now(),
         ]);
 
-        // Create banned user example
-        User::create([
-            'name' => 'Banned User',
-            'email' => 'banned@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'user',
-            'is_banned' => true,
-            'ban_reason' => 'Spam dan konten tidak pantas',
-            'banned_at' => now(),
-            'email_verified_at' => now(),
+        UserProfile::create([
+            'user_id' => $user->id,
+            'bio' => 'Regular community member',
         ]);
+
+        $this->command->info('Users created successfully!');
+        $this->command->info('Admin: admin@hiveworkshop.com / password');
+        $this->command->info('Moderator: moderator@hiveworkshop.com / password');
+        $this->command->info('User: user@hiveworkshop.com / password');
     }
 }

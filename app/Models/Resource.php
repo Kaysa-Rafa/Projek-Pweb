@@ -1,36 +1,26 @@
 <?php
-
+// app/Models/Resource.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Resource extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
-        'title',
-        'slug',
-        'description',
-        'installation_instructions',
-        'user_id',
-        'category_id',
-        'file_path',
-        'file_size',
-        'file_type',
-        'version',
-        'thumbnail_path',
-        'download_count',
-        'view_count',
-        'rating',
-        'rating_count',
-        'is_approved',
-        'is_featured'
+        'user_id', 'category_id', 'title', 'slug', 'description',
+        'file_path', 'file_size', 'version', 'download_count',
+        'view_count', 'is_approved', 'is_featured', 'update_notes'
     ];
 
-    // Relationships
+    protected $casts = [
+        'is_approved' => 'boolean',
+        'is_featured' => 'boolean',
+        'file_size' => 'integer',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -61,7 +51,11 @@ class Resource extends Model
         return $this->hasMany(Download::class);
     }
 
-    // Scopes
+    public function getAverageRatingAttribute()
+    {
+        return $this->ratings()->avg('rating') ?: 0;
+    }
+
     public function scopeApproved($query)
     {
         return $query->where('is_approved', true);
@@ -72,14 +66,8 @@ class Resource extends Model
         return $query->where('is_featured', true);
     }
 
-    public function scopeByCategory($query, $categoryId)
+    public function getRouteKeyName()
     {
-        return $query->where('category_id', $categoryId);
-    }
-
-    public function canBeDownloadedBy($user = null)
-    {
-        if (!$user) return false;
-        return $this->is_approved || $user->id === $this->user_id;
+        return 'slug';
     }
 }
