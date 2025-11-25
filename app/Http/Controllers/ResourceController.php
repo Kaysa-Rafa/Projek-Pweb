@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Resource;
 use App\Models\Category;
 use App\Http\Requests\ResourceStoreRequest;
-use App\Http\Requests\ResourceUpdateRequest;
+// use App\Http\Requests\ResourceUpdateRequest; // Dihapus karena belum digunakan
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str; // Ditambahkan untuk Str::slug()
 
 class ResourceController extends Controller
 {
     protected $fileService;
 
+    // Pastikan FileService ada di app/Services/FileService.php
     public function __construct(FileService $fileService)
     {
         $this->fileService = $fileService;
@@ -40,6 +42,7 @@ class ResourceController extends Controller
                 $query->orderBy('download_count', 'desc');
                 break;
             case 'rating':
+                // Perlu field rating di tabel resources
                 $query->orderBy('rating', 'desc');
                 break;
             case 'latest':
@@ -57,6 +60,7 @@ class ResourceController extends Controller
     public function create()
     {
         $categories = Category::all();
+        // Mengatasi error 404 karena rute ini sekarang aktif
         return view('resources.create', compact('categories'));
     }
 
@@ -73,10 +77,10 @@ class ResourceController extends Controller
     public function store(ResourceStoreRequest $request)
     {
         try {
-            // For now, create a simple resource without file processing
+            // Pastikan Anda telah membuat model Resource
             $resource = Resource::create([
                 'title' => $request->title,
-                'slug' => \Str::slug($request->title),
+                'slug' => Str::slug($request->title), // Menggunakan Str yang sudah di-import
                 'description' => $request->description,
                 'installation_instructions' => $request->installation_instructions,
                 'user_id' => Auth::id(),

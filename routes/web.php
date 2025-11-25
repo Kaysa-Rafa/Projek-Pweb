@@ -9,29 +9,23 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Public & Guest Routes (Tanpa Login)
+| Public & Guest Routes
 |--------------------------------------------------------------------------
-| Semua user, termasuk Guest (belum login), dapat mengakses rute ini.
 */
 
-// Homepage
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-// Melihat Resource (Index & Detail)
 Route::get('/resources', [ResourceController::class, 'index'])->name('resources.index');
 Route::get('/resources/{resource}', [ResourceController::class, 'show'])->name('resources.show');
-
-// Search
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 
 /*
 |--------------------------------------------------------------------------
-| Authenticated User Routes (User & Admin)
+| Authenticated User Routes (Role: user & admin)
 |--------------------------------------------------------------------------
-| Rute yang membutuhkan user sudah login (middleware: auth) dan terverifikasi email (verified).
 */
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -39,14 +33,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // DOWNLOAD: Membutuhkan Login
     Route::get('/resources/{resource}/download', [DownloadController::class, 'download'])->name('resources.download');
 
-    // RESOURCE MANAGEMENT (UPLOAD): Membutuhkan Gate 'manage-resources' (User atau Admin)
+    // UPLOAD: Membutuhkan Gate 'manage-resources'
     Route::get('/resources/upload', [ResourceController::class, 'create'])->name('resources.upload')->can('manage-resources');
     Route::post('/resources', [ResourceController::class, 'store'])->name('resources.store')->can('manage-resources');
     
-    // My Resources
     Route::get('/my-resources', [ResourceController::class, 'userResources'])->name('resources.my');
     
-    // PROFIL (Breeze Default)
+    // PROFIL
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -55,14 +48,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes (Admin ONLY)
+| Admin Routes (Role: admin ONLY)
 |--------------------------------------------------------------------------
-| Rute yang hanya bisa diakses oleh Admin (middleware: auth & can:access-admin-panel).
 */
 
 Route::middleware(['auth', 'can:access-admin-panel'])->group(function () {
+    // DASHBOARD ADMIN
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard'); 
-
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
 
 require __DIR__.'/auth.php';
