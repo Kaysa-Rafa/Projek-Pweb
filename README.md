@@ -124,40 +124,58 @@ Rating: 1-5 star rating system
 
 🎨 Project Structure
 text
-app/
-├── Http/Controllers/
-│   ├── HomeController.php
-│   ├── ResourceController.php
-│   └── CategoryController.php
-├── Models/
-│   ├── User.php
-│   ├── Resource.php
-│   ├── Category.php
-│   └── ...
-└── ...
-
-resources/views/
-├── layouts/
-│   └── app.blade.php
-├── home.blade.php
+hive-workshop/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       ├── HomeController.php
+│   │       ├── ResourceController.php
+│   │       └── CategoryController.php
+│   └── Models/
+│       ├── User.php
+│       ├── Resource.php
+│       ├── Category.php
+│       ├── Tag.php
+│       ├── Comment.php
+│       ├── Rating.php
+│       └── Download.php
+├── database/
+│   ├── migrations/
+│   │   ├── create_users_table.php
+│   │   ├── create_resources_table.php
+│   │   ├── create_categories_table.php
+│   │   └── ...other migrations
+│   └── seeders/
+│       ├── DatabaseSeeder.php
+│       ├── UserSeeder.php
+│       ├── CategorySeeder.php
+│       └── ResourceSeeder.php
 ├── resources/
-│   ├── index.blade.php
-│   └── show.blade.php
-└── categories/
-    ├── index.blade.php
-    └── show.blade.php
-
-database/
-├── migrations/
-└── seeders/
-🚀 Available Routes
-Method	Route	Description
-GET	/	Homepage with stats and recent resources
-GET	/resources	Browse all resources
-GET	/resources/{resource}	View resource details
-GET	/categories	Browse categories
-GET	/categories/{category}	View category resources
-🛠️ Development
+│   └── views/
+│       ├── layouts/
+│       │   └── app.blade.php
+│       ├── home.blade.php
+│       ├── resources/
+│       │   ├── index.blade.php
+│       │   └── show.blade.php
+│       └── categories/
+│           ├── index.blade.php
+│           └── show.blade.php
+├── routes/
+│   └── web.php
+├── public/
+│   └── uploads/
+│       └── resources/
+├── config/
+└── tests/
+🛣️ Available Routes
+Method	Route	Description	Controller
+GET	/	Homepage with stats	HomeController@index
+GET	/resources	Browse all resources	ResourceController@index
+GET	/resources/{resource}	View resource details	ResourceController@show
+GET	/categories	Browse categories	CategoryController@index
+GET	/categories/{category}	View category resources	CategoryController@show
+🛠️ Development Commands
 Running Tests
 bash
 php artisan test
@@ -179,7 +197,7 @@ php artisan make:model Product -m
 
 # New migration
 php artisan make:migration create_products_table
-🌟 Key Features in Detail
+🌟 Key Features Detail
 Resource Management
 File upload with validation
 
@@ -190,7 +208,7 @@ Download tracking
 Approval workflow for submissions
 
 User System
-Role-based permissions
+Role-based permissions (Admin, Moderator, User)
 
 Reputation system
 
@@ -199,13 +217,23 @@ User profiles with avatars
 Activity tracking
 
 Search & Discovery
-Full-text search
+Full-text search across titles and descriptions
 
 Category filtering
 
 Tag-based navigation
 
 Sort by popularity, recent, downloads
+
+📊 Database Schema Overview
+Users Table
+id, name, email, password, role, reputation, is_active
+
+Resources Table
+id, user_id, category_id, title, slug, description, file_path, download_count, view_count, is_approved
+
+Categories Table
+id, name, slug, description, color, icon, is_active
 
 🤝 Contributing
 Fork the project
@@ -219,7 +247,7 @@ Push to the branch (git push origin feature/AmazingFeature)
 Open a Pull Request
 
 📝 License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+This project is licensed under the MIT License.
 
 🆘 Support
 If you encounter any issues:
