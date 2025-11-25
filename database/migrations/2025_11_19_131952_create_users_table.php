@@ -8,18 +8,24 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['guest', 'user', 'admin'])->default('user')->after('email');
-            $table->boolean('is_banned')->default(false)->after('role');
-            $table->text('ban_reason')->nullable()->after('is_banned');
-            $table->timestamp('banned_at')->nullable()->after('ban_reason');
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('username')->unique();
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->enum('role', ['guest', 'user', 'admin'])->default('user');
+            $table->boolean('is_banned')->default(false);
+            $table->text('ban_reason')->nullable();
+            $table->timestamp('banned_at')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['role', 'is_banned', 'ban_reason', 'banned_at']);
-        });
+        Schema::dropIfExists('users');
     }
 };
