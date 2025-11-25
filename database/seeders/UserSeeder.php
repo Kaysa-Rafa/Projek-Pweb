@@ -6,46 +6,46 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class UserSeeder extends Seeder
+class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create admin user
-        User::firstOrCreate(
-            ['email' => 'admin@hiveworkshop.test'],
-            [
-                'name' => 'Admin User',
-                'username' => 'admin',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-                'email_verified_at' => now(),
-            ]
-        );
+        // Create Admin
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
 
-        // Create regular users
-        User::firstOrCreate(
-            ['email' => 'user1@hiveworkshop.test'],
-            [
-                'name' => 'Test User 1',
-                'username' => 'user1',
-                'password' => Hash::make('password'),
-                'role' => 'user',
-                'email_verified_at' => now(),
-            ]
-        );
+        // Create sample users
+        User::create([
+            'name' => 'John Doe',
+            'email' => 'user@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'user',
+            'email_verified_at' => now(),
+        ]);
 
-        User::firstOrCreate(
-            ['email' => 'user2@hiveworkshop.test'],
-            [
-                'name' => 'Test User 2',
-                'username' => 'user2',
-                'password' => Hash::make('password'),
-                'role' => 'user',
-                'email_verified_at' => now(),
-            ]
-        );
+        User::create([
+            'name' => 'Jane Smith',
+            'email' => 'jane@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'user',
+            'email_verified_at' => now(),
+        ]);
 
-        // Create more dummy users
-        User::factory(5)->create();
+        // Create banned user example
+        User::create([
+            'name' => 'Banned User',
+            'email' => 'banned@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'user',
+            'is_banned' => true,
+            'ban_reason' => 'Spam dan konten tidak pantas',
+            'banned_at' => now(),
+            'email_verified_at' => now(),
+        ]);
     }
 }

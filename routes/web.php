@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\Admin\AdminController; // <-- PASTIKAN ADA
 use App\Models\Resource;
 use Illuminate\Support\Facades\Route;
 
@@ -14,20 +16,23 @@ Route::get('/', function () {
 
 // Resource Routes
 Route::get('/resources', [ResourceController::class, 'index'])->name('resources.index');
-Route::get('/resources/upload', [ResourceController::class, 'create'])->name('resources.upload')
-    ->middleware(['auth', 'verified']);
-Route::post('/resources', [ResourceController::class, 'store'])->name('resources.store')
-    ->middleware(['auth', 'verified']);
 Route::get('/resources/{resource}', [ResourceController::class, 'show'])->name('resources.show');
-Route::get('/resources/{resource}/download', [DownloadController::class, 'download'])->name('resources.download')
-    ->middleware('auth');
+
+// Resource Routes (BUTUH AUTH)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/resources/upload', [ResourceController::class, 'create'])->name('resources.upload');
+    Route::post('/resources', [ResourceController::class, 'store'])->name('resources.store');
+    Route::get('/resources/{resource}/download', [DownloadController::class, 'download'])->name('resources.download');
+    Route::get('/my-resources', [ResourceController::class, 'userResources'])->name('resources.my');
+});
 
 // Search Route
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
-// My Resources
-Route::get('/my-resources', [ResourceController::class, 'userResources'])->name('resources.my')
-    ->middleware('auth');
+// --- ADMIN ROUTES (Perbaikan untuk error RouteNotFound) ---
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard'); 
+});
 
 // Profile Routes (Breeze default)
 Route::middleware('auth')->group(function () {
