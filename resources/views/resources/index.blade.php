@@ -1,14 +1,14 @@
 <!-- resources/views/resources/index.blade.php -->
 @extends('layouts.app')
 
-@section('title', 'Resources - HiveWorkshop')
+@section('title', 'Resources - Hive Workshop Community')
 
 @section('content')
 <div class="mb-8">
     <div class="flex justify-between items-center">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Resources</h1>
-            <p class="text-gray-600">Discover and download community resources</p>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Community Resources</h1>
+            <p class="text-gray-600">Discover and download resources shared by our community</p>
         </div>
         @auth
             <a href="{{ route('resources.create') }}" 
@@ -119,19 +119,19 @@
                 @if(request()->hasAny(['search', 'category']))
                     Try adjusting your search filters or 
                 @endif
-                Be the first to submit a resource to the community!
+                Be the first to share your creation with the community!
             </p>
             @auth
                 <a href="{{ route('resources.create') }}" 
                    class="inline-block bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition duration-200">
-                    <i class="fas fa-upload mr-2"></i>Submit First Resource
+                    <i class="fas fa-upload mr-2"></i>Share Your Resource
                 </a>
             @else
                 <div class="space-y-3">
-                    <p class="text-gray-600">Want to contribute?</p>
+                    <p class="text-gray-600">Ready to contribute?</p>
                     <a href="{{ route('register') }}" 
                        class="inline-block bg-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-400 transition duration-200">
-                        Join Community
+                        Join Our Community
                     </a>
                 </div>
             @endauth

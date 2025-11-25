@@ -1,13 +1,13 @@
 <!-- resources/views/home.blade.php -->
 @extends('layouts.app')
 
-@section('title', 'Home - HiveWorkshop')
+@section('title', 'Home - Hive Workshop Community')
 
 @section('content')
 <!-- Hero Section -->
 <div class="text-center mb-12">
-    <h1 class="text-5xl font-bold text-gray-800 mb-4">Welcome to HiveWorkshop Clone</h1>
-    <p class="text-xl text-gray-600 mb-8">A community platform for sharing and discovering Warcraft III resources</p>
+    <h1 class="text-5xl font-bold text-gray-800 mb-4">Welcome to Hive Workshop</h1>
+    <p class="text-xl text-gray-600 mb-8">Your community hub for sharing and discovering Warcraft III resources</p>
     
     <div class="flex justify-center space-x-4">
         <a href="{{ route('resources.index') }}" 
@@ -76,7 +76,7 @@
 <!-- Recent Resources Section -->
 <div class="bg-white rounded-lg shadow-md p-6">
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-3xl font-bold text-gray-800">Recent Resources</h2>
+        <h2 class="text-3xl font-bold text-gray-800">Recently Added</h2>
         <a href="{{ route('resources.index') }}" 
            class="text-blue-500 hover:text-blue-400 font-semibold">
             View All <i class="fas fa-arrow-right ml-1"></i>

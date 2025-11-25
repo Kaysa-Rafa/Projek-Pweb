@@ -1,59 +1,260 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Hive Workshop Community Platform
+A Laravel-based community platform for sharing and discovering Warcraft III resources, maps, models, and tools.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
+https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
+https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white
 
-## About Laravel
+🚀 Features
+🔐 User Authentication - Secure registration and login system
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+📁 Resource Management - Upload, browse, and download resources
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+🗂️ Category System - Organized by Maps, Models, Skins, Tools, Icons, Scripts
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+⭐ Rating & Reviews - Community feedback system
 
-## Learning Laravel
+🔍 Advanced Search - Filter by category, tags, and keywords
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+📊 Analytics - Download tracking and view statistics
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+🎨 Modern UI - Responsive design with Tailwind CSS
 
-## Laravel Sponsors
+👥 User Roles - Admin, Moderator, and User permissions
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+🏷️ Tagging System - Flexible resource categorization
 
-### Premium Partners
+🛠️ Tech Stack
+Backend: Laravel 10
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Frontend: Tailwind CSS, Blade Templates
 
-## Contributing
+Database: MySQL / SQLite
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Authentication: Laravel Breeze
 
-## Code of Conduct
+Icons: Font Awesome
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Deployment Ready: Optimized for production
 
-## Security Vulnerabilities
+📦 Installation
+Prerequisites
+PHP 8.1+
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Composer
 
-## License
+Node.js & NPM
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MySQL or SQLite
+
+Step-by-Step Setup
+Clone the repository
+
+bash
+git clone https://github.com/your-username/hive-workshop.git
+cd hive-workshop
+Install PHP dependencies
+
+bash
+composer install
+Install frontend dependencies
+
+bash
+npm install
+npm run build
+Environment setup
+
+bash
+cp .env.example .env
+php artisan key:generate
+Configure database
+Edit .env file:
+
+env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=hive_workshop
+DB_USERNAME=root
+DB_PASSWORD=
+
+# Or use SQLite for development
+# DB_CONNECTION=sqlite
+Run migrations and seeders
+
+bash
+php artisan migrate --seed
+Start development server
+
+bash
+php artisan serve
+Visit http://localhost:8000 to see the application.
+
+👤 Default Accounts
+After seeding, you can login with these accounts:
+
+Role	Email	Password	Access
+Admin	admin@hiveworkshop.com	password	Full access
+Moderator	moderator@hiveworkshop.com	password	Content moderation
+User	user@hiveworkshop.com	password	Standard user
+🗃️ Database Structure
+text
+databases/
+├── users
+├── user_profiles
+├── categories
+├── resources
+├── tags
+├── resource_tag (pivot)
+├── comments
+├── ratings
+└── downloads
+Key Models
+User: Authentication and profile management
+
+Resource: Main content with files and metadata
+
+Category: Resource classification (Maps, Models, etc.)
+
+Tag: Flexible labeling system
+
+Comment: User discussions and feedback
+
+Rating: 1-5 star rating system
+
+🎨 Project Structure
+text
+app/
+├── Http/Controllers/
+│   ├── HomeController.php
+│   ├── ResourceController.php
+│   └── CategoryController.php
+├── Models/
+│   ├── User.php
+│   ├── Resource.php
+│   ├── Category.php
+│   └── ...
+└── ...
+
+resources/views/
+├── layouts/
+│   └── app.blade.php
+├── home.blade.php
+├── resources/
+│   ├── index.blade.php
+│   └── show.blade.php
+└── categories/
+    ├── index.blade.php
+    └── show.blade.php
+
+database/
+├── migrations/
+└── seeders/
+🚀 Available Routes
+Method	Route	Description
+GET	/	Homepage with stats and recent resources
+GET	/resources	Browse all resources
+GET	/resources/{resource}	View resource details
+GET	/categories	Browse categories
+GET	/categories/{category}	View category resources
+🛠️ Development
+Running Tests
+bash
+php artisan test
+Generating Assets
+bash
+npm run dev
+# or for production
+npm run build
+Database Reset
+bash
+php artisan migrate:fresh --seed
+Creating New Components
+bash
+# New controller
+php artisan make:controller PhotoController --resource
+
+# New model with migration
+php artisan make:model Product -m
+
+# New migration
+php artisan make:migration create_products_table
+🌟 Key Features in Detail
+Resource Management
+File upload with validation
+
+Version control for updates
+
+Download tracking
+
+Approval workflow for submissions
+
+User System
+Role-based permissions
+
+Reputation system
+
+User profiles with avatars
+
+Activity tracking
+
+Search & Discovery
+Full-text search
+
+Category filtering
+
+Tag-based navigation
+
+Sort by popularity, recent, downloads
+
+🤝 Contributing
+Fork the project
+
+Create your feature branch (git checkout -b feature/AmazingFeature)
+
+Commit your changes (git commit -m 'Add some AmazingFeature')
+
+Push to the branch (git push origin feature/AmazingFeature)
+
+Open a Pull Request
+
+📝 License
+This project is licensed under the MIT License - see the LICENSE.md file for details.
+
+🆘 Support
+If you encounter any issues:
+
+Check the Issues page
+
+Create a new issue with detailed description
+
+Provide steps to reproduce the problem
+
+🚀 Deployment
+For Production
+Set APP_ENV=production in .env
+
+Run php artisan config:cache
+
+Run php artisan route:cache
+
+Ensure file permissions are correct
+
+Set up proper database backups
+
+Environment Variables
+Key environment variables to configure:
+
+env
+APP_NAME="Hive Workshop"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
+
+DB_CONNECTION=mysql
+# ... other DB settings
+
+SESSION_DRIVER=database
+Built with ❤️ using Laravel and Tailwind CSS
+
+For more information, visit the Laravel documentation.

@@ -1,9 +1,10 @@
+<!-- resources/views/layouts/app.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Hive Workshop Clone')</title>
+    <title>@yield('title', 'Hive Workshop Community')</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -31,7 +32,7 @@
                 <!-- Logo -->
                 <a href="{{ url('/') }}" class="text-2xl font-bold flex items-center">
                     <i class="fas fa-hive mr-2"></i>
-                    HiveWorkshop
+                    Hive Workshop
                 </a>
 
                 <!-- Navigation Links -->
@@ -105,8 +106,8 @@
                 <a href="#" class="hover:text-yellow-400 transition"><i class="fab fa-github fa-lg"></i></a>
                 <a href="#" class="hover:text-yellow-400 transition"><i class="fab fa-twitter fa-lg"></i></a>
             </div>
-            <p>&copy; 2025 HiveWorkshop. All rights reserved.</p>
-            <p class="text-gray-400 text-sm mt-2">Built with Laravel & Tailwind CSS</p>
+            <p>&copy; 2024 Hive Workshop Community. All rights reserved.</p>
+            <p class="text-gray-400 text-sm mt-2">Powered by Laravel & Tailwind CSS</p>
         </div>
     </footer>
 </body>
