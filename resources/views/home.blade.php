@@ -1,141 +1,167 @@
 <!-- resources/views/home.blade.php -->
 @extends('layouts.app')
 
-@section('title', 'Home - Hive Workshop Community')
+@section('title', 'Home - Hive Workshop')
 
 @section('content')
-<!-- Hero Section -->
-<div class="text-center mb-12">
-    <h1 class="text-5xl font-bold text-gray-800 mb-4">Welcome to Hive Workshop</h1>
-    <p class="text-xl text-gray-600 mb-8">Your community hub for sharing and discovering Warcraft III resources</p>
-    
-    <div class="flex justify-center space-x-4">
-        <a href="{{ route('resources.index') }}" 
-           class="bg-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-400 transition duration-200">
-            <i class="fas fa-search mr-2"></i>Browse Resources
-        </a>
-        @auth
-            <a href="{{ route('resources.create') }}" 
-               class="bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition duration-200">
-                <i class="fas fa-upload mr-2"></i>Submit Resource
+<div class="container py-4">
+    <!-- Hero Section -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary mb-3">Welcome to Hive Workshop</h1>
+        <p class="lead text-muted">Your community hub for sharing and discovering Warcraft III resources</p>
+        
+        <div class="mt-4">
+            <a href="{{ route('resources.index') }}" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-search me-2"></i>Browse Resources
             </a>
-        @else
-            <a href="{{ route('register') }}" 
-               class="bg-green-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-400 transition duration-200">
-                <i class="fas fa-user-plus mr-2"></i>Join Community
-            </a>
-        @endauth
-    </div>
-</div>
-
-<!-- Stats Section -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-    <div class="bg-white rounded-lg shadow-md p-6 text-center">
-        <div class="text-3xl text-blue-500 mb-2">
-            <i class="fas fa-box"></i>
-        </div>
-        <h3 class="text-xl font-semibold text-gray-800">Total Resources</h3>
-        <p class="text-2xl font-bold text-gray-900">{{ \App\Models\Resource::count() }}</p>
-    </div>
-    
-    <div class="bg-white rounded-lg shadow-md p-6 text-center">
-        <div class="text-3xl text-green-500 mb-2">
-            <i class="fas fa-download"></i>
-        </div>
-        <h3 class="text-xl font-semibold text-gray-800">Total Downloads</h3>
-        <p class="text-2xl font-bold text-gray-900">{{ \App\Models\Resource::sum('download_count') }}</p>
-    </div>
-    
-    <div class="bg-white rounded-lg shadow-md p-6 text-center">
-        <div class="text-3xl text-purple-500 mb-2">
-            <i class="fas fa-users"></i>
-        </div>
-        <h3 class="text-xl font-semibold text-gray-800">Community Members</h3>
-        <p class="text-2xl font-bold text-gray-900">{{ \App\Models\User::count() }}</p>
-    </div>
-</div>
-
-<!-- Categories Section -->
-<div class="bg-white rounded-lg shadow-md p-6 mb-12">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6">Browse by Category</h2>
-    
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        @foreach(\App\Models\Category::all() as $category)
-            <a href="{{ route('categories.show', $category) }}" 
-               class="bg-{{ $category->color }}-100 text-{{ $category->color }}-800 p-4 rounded-lg text-center hover:bg-{{ $category->color }}-200 transition duration-200 hover-scale">
-                <div class="text-2xl mb-2">{{ $category->icon }}</div>
-                <h3 class="font-semibold">{{ $category->name }}</h3>
-                <p class="text-sm text-gray-600 mt-1">
-                    {{ $category->resources_count ?? 0 }} resources
-                </p>
-            </a>
-        @endforeach
-    </div>
-</div>
-
-<!-- Recent Resources Section -->
-<div class="bg-white rounded-lg shadow-md p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-3xl font-bold text-gray-800">Recently Added</h2>
-        <a href="{{ route('resources.index') }}" 
-           class="text-blue-500 hover:text-blue-400 font-semibold">
-            View All <i class="fas fa-arrow-right ml-1"></i>
-        </a>
-    </div>
-    
-    @php
-        $recentResources = \App\Models\Resource::with('user', 'category')
-            ->latest()
-            ->take(6)
-            ->get();
-    @endphp
-    
-    @if($recentResources->count() > 0)
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($recentResources as $resource)
-                <div class="border border-gray-200 rounded-lg hover:shadow-lg transition duration-200 hover-scale">
-                    <div class="p-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-semibold text-lg">
-                                <a href="{{ route('resources.show', $resource) }}" 
-                                   class="text-gray-800 hover:text-blue-600 transition">
-                                    {{ $resource->title }}
-                                </a>
-                            </h3>
-                            <span class="bg-{{ $resource->category->color }}-100 text-{{ $resource->category->color }}-800 text-xs px-2 py-1 rounded">
-                                {{ $resource->category->name }}
-                            </span>
-                        </div>
-                        
-                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">
-                            {{ Str::limit($resource->description, 100) }}
-                        </p>
-                        
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span class="flex items-center">
-                                <i class="fas fa-user mr-1"></i>
-                                {{ $resource->user->name }}
-                            </span>
-                            <span class="flex items-center">
-                                <i class="fas fa-download mr-1"></i>
-                                {{ $resource->download_count }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @else
-        <div class="text-center py-8">
-            <i class="fas fa-inbox text-4xl text-gray-400 mb-4"></i>
-            <p class="text-gray-500">No resources yet. Be the first to submit one!</p>
             @auth
-                <a href="{{ route('resources.create') }}" 
-                   class="inline-block mt-4 bg-yellow-500 text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-yellow-400 transition">
-                    Submit Resource
+                <a href="{{ route('resources.create') }}" class="btn btn-warning btn-lg">
+                    <i class="fas fa-upload me-2"></i>Submit Resource
                 </a>
+            @else
+                <a href="{{ route('register') }}" class="btn btn-success btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>Join Community
+                </a>
+            @endauth
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="row mb-5">
+        <div class="col-md-4 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-primary mb-3">
+                        <i class="fas fa-box fa-3x"></i>
+                    </div>
+                    <h3 class="card-title">{{ \App\Models\Resource::count() }}</h3>
+                    <p class="card-text text-muted">Total Resources</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-success mb-3">
+                        <i class="fas fa-download fa-3x"></i>
+                    </div>
+                    <h3 class="card-title">{{ \App\Models\Resource::sum('download_count') }}</h3>
+                    <p class="card-text text-muted">Total Downloads</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-purple mb-3">
+                        <i class="fas fa-users fa-3x"></i>
+                    </div>
+                    <h3 class="card-title">{{ \App\Models\User::count() }}</h3>
+                    <p class="card-text text-muted">Community Members</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="card mb-5">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title mb-0">Browse by Category</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach($categories as $category)
+                    <div class="col-md-4 col-lg-2 mb-3">
+                        <a href="{{ route('categories.show', $category) }}" 
+                           class="card category-card text-decoration-none text-center h-100">
+                            <div class="card-body">
+                                <div class="text-primary mb-2" style="font-size: 2rem;">
+                                    {{ $category->icon }}
+                                </div>
+                                <h6 class="card-title text-dark">{{ $category->name }}</h6>
+                                <small class="text-muted">
+                                    {{ $category->resources->count() }} resources
+                                </small>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Resources Section -->
+    <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="card-title mb-0">Recently Added</h3>
+            <a href="{{ route('resources.index') }}" class="btn btn-light btn-sm">
+                View All <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+        <div class="card-body">
+            @if($recentResources->count() > 0)
+                <div class="row">
+                    @foreach($recentResources as $resource)
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title">
+                                            <a href="{{ route('resources.show', $resource) }}" 
+                                               class="text-decoration-none text-dark">
+                                                {{ $resource->title }}
+                                            </a>
+                                        </h5>
+                                        <span class="badge bg-info">{{ $resource->category->name }}</span>
+                                    </div>
+                                    
+                                    <p class="card-text text-muted small">
+                                        {{ Str::limit($resource->description, 100) }}
+                                    </p>
+                                    
+                                    <div class="d-flex justify-content-between text-muted small">
+                                        <span>
+                                            <i class="fas fa-user me-1"></i>
+                                            {{ $resource->user->name }}
+                                        </span>
+                                        <span>
+                                            <i class="fas fa-download me-1"></i>
+                                            {{ $resource->download_count }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a href="{{ route('resources.show', $resource) }}" 
+                                       class="btn btn-outline-primary btn-sm w-100">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-4">
+                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No resources yet. Be the first to submit one!</p>
+                    @auth
+                        <a href="{{ route('resources.create') }}" class="btn btn-warning">
+                            Submit Resource
+                        </a>
+                    @endif
+                </div>
             @endif
         </div>
-    @endif
+    </div>
 </div>
+
+<style>
+.category-card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+</style>
 @endsection

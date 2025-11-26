@@ -1,45 +1,40 @@
+<!-- resources/views/categories/index.blade.php -->
 @extends('layouts.app')
 
-@section('title', 'Categories - Hive Workshop Community')
+@section('title', 'Categories - Hive Workshop')
 
 @section('content')
-<div class="mb-10">
-    <h1 class="text-4xl font-bold text-gray-800 mb-2">Resource Categories</h1>
-    <p class="text-gray-600 text-lg">Browse high-quality resources by category</p>
-</div>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 fw-bold text-dark">Resource Categories</h1>
+        <p class="text-muted mb-0">Browse resources by category</p>
+    </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-    @foreach($categories as $category)
-        <a href="{{ route('categories.show', $category->slug) }}" 
-           class="block bg-white rounded-xl shadow hover:shadow-lg transition transform hover:-translate-y-1 border border-gray-100">
-
-            <div class="p-6 flex flex-col items-center text-center">
-
-                {{-- Icon --}}
-                <div class="text-5xl mb-4">
-                    {{ $category->icon ?? '📁' }}
+    <div class="row">
+        @foreach($categories as $category)
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="text-primary mb-3" style="font-size: 3rem;">
+                            {{ $category->icon }}
+                        </div>
+                        <h4 class="card-title text-dark">{{ $category->name }}</h4>
+                        <p class="card-text text-muted">{{ $category->description }}</p>
+                        <div class="mt-3">
+                            <span class="badge bg-secondary">
+                                {{ $category->resources->count() }} resources
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent text-center">
+                        <a href="{{ route('categories.show', $category) }}" 
+                           class="btn btn-primary w-100">
+                            Browse Resources
+                        </a>
+                    </div>
                 </div>
-
-                {{-- Name --}}
-                <h3 class="text-2xl font-bold text-gray-800">
-                    {{ $category->name }}
-                </h3>
-
-                {{-- Description --}}
-                <p class="text-gray-600 mt-2 mb-6">
-                    {{ $category->description }}
-                </p>
-
-                {{-- Button --}}
-                <span class="px-5 py-2 rounded-lg text-white font-semibold bg-{{ $category->color }}-600 hover:bg-{{ $category->color }}-500 transition">
-                    Explore Resources →
-                </span>
-
             </div>
-
-        </a>
-    @endforeach
-
+        @endforeach
+    </div>
 </div>
 @endsection

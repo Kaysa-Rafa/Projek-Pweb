@@ -1,66 +1,128 @@
 <?php
-// database/seeders/ResourceSeeder.php
+
 namespace Database\Seeders;
 
-use App\Models\Resource;
-use App\Models\Tag;
-use App\Models\User;
-use App\Models\Category;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Resource;
+use App\Models\Category;
 
 class ResourceSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('resources')->delete();
+        $models = Category::where('slug', 'models')->first();
+        $skins = Category::where('slug', 'skins')->first();
+        $icons = Category::where('slug', 'icons')->first();
+        $spells = Category::where('slug', 'spells')->first();
+        $maps = Category::where('slug', 'maps')->first();
+        $tools = Category::where('slug', 'tools')->first();
+        $tutorials = Category::where('slug', 'tutorials')->first();
+        $packs = Category::where('slug', 'packs')->first();
+        $scripts = Category::where('slug', 'scripts-ai')->first();
 
-        $users = User::all();
-        $categories = Category::all();
-        
-        // Create some tags
-        $tags = Tag::firstOrCreate(['name' => 'Warcraft III', 'slug' => 'warcraft-iii']);
-        $tags = Tag::firstOrCreate(['name' => 'Custom Map', 'slug' => 'custom-map']);
-        $tags = Tag::firstOrCreate(['name' => 'HD', 'slug' => 'hd']);
-        $tags = Tag::firstOrCreate(['name' => 'Multiplayer', 'slug' => 'multiplayer']);
+        $resources = [
 
-        for ($i = 1; $i <= 20; $i++) {
-            $resource = Resource::create([
-                'user_id' => $users->random()->id,
-                'category_id' => $categories->random()->id,
-                'title' => 'Sample Resource ' . $i,
-                'slug' => 'sample-resource-' . $i,
-                'description' => $this->generateDescription($i),
-                'file_path' => 'resources/sample-' . $i . '.zip',
-                'file_size' => rand(1024, 10485760), // 1KB to 10MB
-                'version' => '1.' . ($i % 3),
-                'download_count' => rand(50, 5000),
-                'view_count' => rand(100, 10000),
-                'is_approved' => true,
-                'is_featured' => $i <= 5, // First 5 are featured
-                'update_notes' => $i % 3 == 0 ? 'Fixed some bugs and improved performance' : null,
-                'created_at' => now()->subDays(rand(1, 365)),
-                'updated_at' => now(),
-            ]);
+            // MODELS
+            [
+                'title' => 'Footman HD Model',
+                'slug' => 'footman-hd-model',
+                'description' => 'High quality Footman model with improved animations.',
+                'file_path' => 'uploads/models/footman_hd.mdx',
+                'category_id' => $models->id,
+                'download_count' => 1220,
+            ],
+            [
+                'title' => 'Dragon Whelp Model',
+                'slug' => 'dragon-whelp-model',
+                'description' => 'A cute dragon whelp unit model.',
+                'file_path' => 'uploads/models/dragon_whelp.mdx',
+                'category_id' => $models->id,
+                'download_count' => 850,
+            ],
 
-            // Attach random tags
-            $resource->tags()->attach(
-                Tag::inRandomOrder()->limit(rand(1, 3))->pluck('id')
-            );
-        }
-    }
+            // SKINS
+            [
+                'title' => 'Knight Elite Skin',
+                'slug' => 'knight-elite-skin',
+                'description' => 'Reworked knight armor with HD textures.',
+                'file_path' => 'uploads/skins/knight_elite.blp',
+                'category_id' => $skins->id,
+                'download_count' => 540,
+            ],
 
-    private function generateDescription($index): string
-    {
-        $descriptions = [
-            "A high-quality custom map for Warcraft III with unique gameplay mechanics and balanced heroes.",
-            "This model pack includes detailed character models with custom animations and textures.",
-            "HD texture pack that enhances the visual quality of the game with improved resolution.",
-            "Powerful tool for modding Warcraft III maps with user-friendly interface and extensive features.",
-            "Collection of custom icons for spells, items, and abilities with consistent art style.",
-            "Advanced script library for creating complex game mechanics and AI behaviors.",
+            // ICONS
+            [
+                'title' => 'BTNFireball Icon',
+                'slug' => 'btn-fireball-icon',
+                'description' => 'Warcraft 3 style fireball icon (BTN/DISBTN).',
+                'file_path' => 'uploads/icons/btn_fireball.png',
+                'category_id' => $icons->id,
+                'download_count' => 300,
+            ],
+
+            // SPELLS
+            [
+                'title' => 'Meteor Strike Spell',
+                'slug' => 'meteor-strike-spell',
+                'description' => 'A cinematic meteor strike spell with SFX.',
+                'file_path' => 'uploads/spells/meteor_strike.w3x',
+                'category_id' => $spells->id,
+                'download_count' => 760,
+            ],
+
+            // MAPS
+            [
+                'title' => 'The Frozen Kingdom Map',
+                'slug' => 'frozen-kingdom-map',
+                'description' => 'A melee map set in the frozen north.',
+                'file_path' => 'uploads/maps/frozen_kingdom.w3x',
+                'category_id' => $maps->id,
+                'download_count' => 1500,
+            ],
+
+            // TOOLS
+            [
+                'title' => 'Model Converter Tool',
+                'slug' => 'model-converter-tool',
+                'description' => 'Convert MDX ↔ OBJ for Warcraft III modding.',
+                'file_path' => 'uploads/tools/model_converter.zip',
+                'category_id' => $tools->id,
+                'download_count' => 670,
+            ],
+
+            // TUTORIALS
+            [
+                'title' => 'How to Create Custom Icons',
+                'slug' => 'tutorial-custom-icons',
+                'description' => 'Beginner friendly guide to creating Warcraft 3 icons.',
+                'file_path' => null,
+                'category_id' => $tutorials->id,
+                'download_count' => 0,
+            ],
+
+            // PACKS
+            [
+                'title' => 'Human Buildings Pack',
+                'slug' => 'human-buildings-pack',
+                'description' => 'A pack of improved human building models.',
+                'file_path' => 'uploads/packs/human_buildings_pack.zip',
+                'category_id' => $packs->id,
+                'download_count' => 940,
+            ],
+
+            // SCRIPTS & AI
+            [
+                'title' => 'Advanced AI System (JASS)',
+                'slug' => 'advanced-ai-system',
+                'description' => 'A smart JASS-based AI system for custom maps.',
+                'file_path' => 'uploads/scripts/advanced_ai.j',
+                'category_id' => $scripts->id,
+                'download_count' => 500,
+            ],
         ];
 
-        return $descriptions[$index % count($descriptions)] . " This is sample resource #{$index}.";
+        foreach ($resources as $r) {
+            Resource::create($r);
+        }
     }
 }

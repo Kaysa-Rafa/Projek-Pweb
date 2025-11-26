@@ -1,79 +1,87 @@
 <!-- resources/views/categories/show.blade.php -->
 @extends('layouts.app')
 
-@section('title', $category->name . ' - HiveWorkshop Clone')
+@section('title', $category->name . ' - Hive Workshop')
 
 @section('content')
-<div class="mb-8">
-    <div class="flex items-center space-x-4 mb-4">
-        <div class="text-4xl">{{ $category->icon }}</div>
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('categories.index') }}">Categories</a></li>
+            <li class="breadcrumb-item active">{{ $category->name }}</li>
+        </ol>
+    </nav>
+
+    <!-- Category Header -->
+    <div class="d-flex align-items-center mb-4">
+        <div class="text-primary me-3" style="font-size: 2.5rem;">
+            {{ $category->icon }}
+        </div>
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">{{ $category->name }}</h1>
-            <p class="text-gray-600">{{ $category->description }}</p>
+            <h1 class="h2 fw-bold text-dark mb-1">{{ $category->name }}</h1>
+            <p class="text-muted mb-0">{{ $category->description }}</p>
         </div>
     </div>
-</div>
 
-@if($resources->count() > 0)
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        @foreach($resources as $resource)
-            <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 hover-scale">
-                <div class="p-4">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-semibold text-lg">
-                            <a href="{{ route('resources.show', $resource) }}" 
-                               class="text-gray-800 hover:text-blue-600 transition duration-200">
-                                {{ $resource->title }}
-                            </a>
-                        </h3>
-                        <span class="bg-{{ $category->color }}-100 text-{{ $category->color }}-800 text-xs px-2 py-1 rounded">
-                            {{ $category->name }}
-                        </span>
-                    </div>
-                    
-                    <p class="text-gray-600 text-sm mb-3 line-clamp-2">
-                        {{ Str::limit($resource->description, 120) }}
-                    </p>
-
-                    <div class="flex justify-between items-center text-sm text-gray-600">
-                        <div class="flex items-center">
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($resource->user->name) }}&background=random" 
-                                 alt="{{ $resource->user->name }}"
-                                 class="w-6 h-6 rounded-full mr-2">
-                            {{ $resource->user->name }}
+    <!-- Resources Grid -->
+    @if($resources->count() > 0)
+        <div class="row">
+            @foreach($resources as $resource)
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title">
+                                    <a href="{{ route('resources.show', $resource) }}" 
+                                       class="text-decoration-none text-dark">
+                                        {{ $resource->title }}
+                                    </a>
+                                </h5>
+                                <span class="badge bg-info">{{ $category->name }}</span>
+                            </div>
+                            
+                            <p class="card-text text-muted small">
+                                {{ Str::limit($resource->description, 100) }}
+                            </p>
+                            
+                            <div class="d-flex justify-content-between text-muted small">
+                                <span>
+                                    <i class="fas fa-user me-1"></i>
+                                    {{ $resource->user->name }}
+                                </span>
+                                <span>
+                                    <i class="fas fa-download me-1"></i>
+                                    {{ $resource->download_count }}
+                                </span>
+                            </div>
                         </div>
-                        
-                        <div class="flex items-center space-x-4">
-                            <span class="flex items-center" title="Downloads">
-                                <i class="fas fa-download mr-1"></i>
-                                {{ $resource->download_count }}
-                            </span>
+                        <div class="card-footer bg-transparent">
+                            <a href="{{ route('resources.show', $resource) }}" 
+                               class="btn btn-outline-primary btn-sm w-100">
+                                View Details
+                            </a>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
+            @endforeach
+        </div>
 
-    <!-- Pagination -->
-    <div class="bg-white rounded-lg shadow-md p-4">
-        {{ $resources->links() }}
-    </div>
-@else
-    <div class="bg-white rounded-lg shadow-md p-12 text-center">
-        <div class="max-w-md mx-auto">
-            <i class="fas fa-inbox text-6xl text-gray-400 mb-6"></i>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">No Resources in {{ $category->name }}</h3>
-            <p class="text-gray-600 mb-6">
-                There are no resources in this category yet.
-            </p>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+            {{ $resources->links() }}
+        </div>
+    @else
+        <div class="text-center py-5">
+            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No Resources in {{ $category->name }}</h4>
+            <p class="text-muted">There are no resources in this category yet.</p>
             @auth
-                <a href="{{ route('resources.create') }}" 
-                   class="inline-block bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition duration-200">
-                    <i class="fas fa-upload mr-2"></i>Submit Resource
+                <a href="{{ route('resources.create') }}" class="btn btn-warning">
+                    Submit Resource
                 </a>
             @endif
         </div>
-    </div>
-@endif
+    @endif
+</div>
 @endsection

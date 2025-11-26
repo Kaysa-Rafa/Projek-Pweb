@@ -1,4 +1,5 @@
 <?php
+// app/Http/Controllers/HomeController.php
 namespace App\Http\Controllers;
 
 use App\Models\Resource;

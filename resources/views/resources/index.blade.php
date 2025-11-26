@@ -43,7 +43,7 @@
                         <h5 class="fw-bold">{{ $resource->title }}</h5>
 
                         {{-- Kategori --}}
-                        <span class="badge bg-info mb-2">
+                        <span class="badge bg-info mb-2 text-white">
                             {{ $resource->category->name ?? 'Tanpa Kategori' }}
                         </span>
 
@@ -64,7 +64,7 @@
 
                     </div>
 
-                    <div class="card-footer bg-white border-top-0">
+                    <div class="card-footer bg-white">
                         <a href="{{ route('resources.show', $resource->id) }}" 
                            class="btn btn-sm btn-outline-primary w-100">
                             Lihat Detail
@@ -81,4 +81,30 @@
     </div>
 
 </div>
+
+<style>
+/* Custom styles for dark mode pagination */
+.dark-mode .pagination .page-link {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.dark-mode .pagination .page-item.active .page-link {
+    background-color: #3182ce;
+    border-color: #3182ce;
+    color: white;
+}
+
+.dark-mode .pagination .page-link:hover {
+    background-color: #4a5568;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+/* Smooth transitions */
+.card, .form-control, .btn, .alert, .page-link {
+    transition: all 0.3s ease;
+}
+</style>
 @endsection
