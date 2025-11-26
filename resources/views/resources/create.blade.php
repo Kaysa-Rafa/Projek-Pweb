@@ -1,194 +1,168 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <div>
-                <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
-                    Upload Resource
-                </h2>
-                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">
-                    Share your custom Warcraft 3 resources with the community
-                </p>
-            </div>
-            <a href="{{ route('resources.index') }}" class="btn-outline">
-                Back to Resources
-            </a>
-        </div>
-    </x-slot>
+<!-- resources/views/resources/create.blade.php -->
+@extends('layouts.app')
 
-    <div class="py-6">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="card p-6">
-                <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-                    @csrf
-                    
-                    <!-- Title -->
-                    <div>
-                        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Resource Title *
-                        </label>
-                        <input type="text" 
-                               name="title" 
-                               id="title" 
-                               value="{{ old('title') }}"
-                               required
-                               class="input-primary"
-                               placeholder="Enter a descriptive title for your resource">
-                        @error('title')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+@section('title', 'Upload Resource - Hive Workshop')
 
-                    <!-- Description -->
-                    <div>
-                        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Description *
-                        </label>
-                        <textarea name="description" 
-                                  id="description" 
-                                  rows="4" 
-                                  required
-                                  class="input-primary"
-                                  placeholder="Describe your resource in detail...">{{ old('description') }}</textarea>
-                        @error('description')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+@section('content')
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-upload me-2"></i>Upload Resource Baru</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data" id="uploadForm">
+                        @csrf
 
-                    <!-- Installation Instructions -->
-                    <div>
-                        <label for="installation_instructions" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Installation Instructions
-                        </label>
-                        <textarea name="installation_instructions" 
-                                  id="installation_instructions" 
-                                  rows="3"
-                                  class="input-primary"
-                                  placeholder="How to install and use this resource...">{{ old('installation_instructions') }}</textarea>
-                        @error('installation_instructions')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Category -->
-                    <div>
-                        <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Category *
-                        </label>
-                        <select name="category_id" id="category_id" required class="input-primary">
-                            <option value="">Select a category</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('category_id')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- File Upload -->
-                    <div>
-                        <label for="resource_file" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Resource File *
-                        </label>
-                        <input type="file" 
-                               name="resource_file" 
-                               id="resource_file" 
-                               required
-                               class="input-primary"
-                               accept=".w3x,.w3m,.zip,.rar,.mdx,.mdl,.blp,.tga,.dds,.png,.jpg,.jpeg,.exe,.7z">
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            Supported formats: .w3x, .w3m, .zip, .rar, .mdx, .mdl, .blp, .tga, .dds, .png, .jpg, .jpeg, .exe, .7z
-                        </p>
-                        @error('resource_file')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Version -->
-                    <div>
-                        <label for="version" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Version
-                        </label>
-                        <input type="text" 
-                               name="version" 
-                               id="version" 
-                               value="{{ old('version', '1.0') }}"
-                               class="input-primary"
-                               placeholder="1.0">
-                        @error('version')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Tags -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Tags
-                        </label>
-                        <div class="flex flex-wrap gap-2 mb-2">
-                            @php
-                                $commonTags = ['melee', 'rpg', 'td', 'arena', 'hero', 'custom', 'multiplayer', 'texture', 'model', 'icon', 'tool'];
-                            @endphp
-                            @foreach($commonTags as $tag)
-                                <label class="inline-flex items-center">
-                                    <input type="checkbox" name="tags[]" value="{{ $tag }}" class="rounded border-gray-300 text-hive-600 focus:ring-hive-500">
-                                    <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ $tag }}</span>
-                                </label>
-                            @endforeach
+                        <!-- Title -->
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Judul Resource <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control @error('title') is-invalid @enderror" 
+                                   id="title" name="title" value="{{ old('title') }}" required>
+                            @error('title')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                        <input type="text" 
-                               name="custom_tags"
-                               class="input-primary"
-                               placeholder="Add custom tags (comma separated)">
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            Select common tags or add your own
-                        </p>
-                    </div>
 
-                    <!-- Submit Button -->
-                    <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-600">
-                        <a href="{{ route('resources.index') }}" class="btn-secondary">
-                            Cancel
-                        </a>
-                        <button type="submit" class="btn-primary">
-                            Upload Resource
-                        </button>
-                    </div>
-                </form>
+                        <!-- Category -->
+                        <div class="mb-3">
+                            <label for="category_id" class="form-label">Kategori <span class="text-danger">*</span></label>
+                            <select class="form-select @error('category_id') is-invalid @enderror" 
+                                    id="category_id" name="category_id" required>
+                                <option value="">Pilih Kategori</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Deskripsi <span class="text-danger">*</span></label>
+                            <textarea class="form-control @error('description') is-invalid @enderror" 
+                                      id="description" name="description" rows="4" required>{{ old('description') }}</textarea>
+                            <div class="form-text">Jelaskan secara detail tentang resource Anda.</div>
+                            @error('description')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- File Upload -->
+                        <div class="mb-3">
+                            <label for="resource_file" class="form-label">File Resource <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control @error('resource_file') is-invalid @enderror" 
+                                   id="resource_file" name="resource_file" accept=".zip,.rar,.7z,.w3x,.w3m,.map,.jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.txt" required>
+                            <div class="form-text">
+                                Format yang didukung: ZIP, RAR, 7Z, W3X, W3M, MAP, Images, PDF, DOC, TXT. Maksimal 50MB.
+                            </div>
+                            @error('resource_file')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Version -->
+                        <div class="mb-3">
+                            <label for="version" class="form-label">Versi <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control @error('version') is-invalid @enderror" 
+                                   id="version" name="version" value="{{ old('version', '1.0') }}" required>
+                            @error('version')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Update Notes -->
+                        <div class="mb-3">
+                            <label for="update_notes" class="form-label">Catatan Update</label>
+                            <textarea class="form-control @error('update_notes') is-invalid @enderror" 
+                                      id="update_notes" name="update_notes" rows="2">{{ old('update_notes') }}</textarea>
+                            <div class="form-text">Jelaskan perubahan atau update pada versi ini (opsional).</div>
+                            @error('update_notes')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Tags -->
+                        <div class="mb-3">
+                            <label for="tags" class="form-label">Tags</label>
+                            <input type="text" class="form-control @error('tags') is-invalid @enderror" 
+                                   id="tags" name="tags" value="{{ old('tags') }}" placeholder="warcraft, map, custom, hd">
+                            <div class="form-text">Pisahkan tags dengan koma (opsional).</div>
+                            @error('tags')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Privacy -->
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="is_public" name="is_public" value="1" checked>
+                                <label class="form-check-label" for="is_public">
+                                    Resource Public (dapat dilihat dan didownload oleh semua user)
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('resources.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Kembali
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-upload me-1"></i> Upload Resource
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <!-- Upload Guidelines -->
-            <div class="card p-6 mt-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Upload Guidelines</h3>
-                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                    <li class="flex items-start">
-                        <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                        Ensure your resource is original or you have permission to share it
-                    </li>
-                    <li class="flex items-start">
-                        <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                        Provide clear installation instructions when necessary
-                    </li>
-                    <li class="flex items-start">
-                        <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                        Test your resource before uploading
-                    </li>
-                    <li class="flex items-start">
-                        <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                        Use descriptive titles and detailed descriptions
-                    </li>
-                </ul>
+            <div class="card mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Panduan Upload</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li>Pastikan file yang diupload tidak melanggar hak cipta</li>
+                        <li>Gunakan judul yang deskriptif dan jelas</li>
+                        <li>Berikan deskripsi yang detail tentang resource Anda</li>
+                        <li>Resource akan ditinjau terlebih dahulu oleh admin sebelum dipublikasikan</li>
+                        <li>File yang diupload akan disimpan secara aman</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</div>
+
+<script>
+// File size validation
+document.getElementById('uploadForm').addEventListener('submit', function(e) {
+    const fileInput = document.getElementById('resource_file');
+    const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+    
+    if (fileInput.files.length > 0) {
+        const fileSize = fileInput.files[0].size;
+        if (fileSize > maxSize) {
+            e.preventDefault();
+            alert('Ukuran file terlalu besar! Maksimal 50MB.');
+            return false;
+        }
+    }
+});
+
+// Show file name
+document.getElementById('resource_file').addEventListener('change', function(e) {
+    const fileName = e.target.files[0]?.name;
+    if (fileName) {
+        const label = this.previousElementSibling;
+        label.textContent = 'File Resource: ' + fileName;
+    }
+});
+</script>
+@endsection

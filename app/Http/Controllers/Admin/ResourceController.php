@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Resource;
 use App\Models\Category;
 use App\Http\Requests\ResourceStoreRequest;
+use App\Http\Controllers\Controller;
 // use App\Http\Requests\ResourceUpdateRequest; // Dihapus karena belum digunakan
 use App\Services\FileService;
 use Illuminate\Http\Request;
