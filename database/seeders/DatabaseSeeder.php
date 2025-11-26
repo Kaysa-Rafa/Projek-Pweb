@@ -9,8 +9,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            UserSeeder::class,
+            CategorySeeder::class,
+            ResourceSeeder::class,
         ]);
+        
 
         $this->command->info('=== Database Seeding Completed ===');
         $this->command->info('Admin: admin@hiveworkshop.com / password');

@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 class LoginRequest extends FormRequest
 {
     /**
-     * Tentukan apakah user diizinkan untuk membuat request ini.
+     * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
@@ -20,18 +20,18 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Dapatkan aturan validasi yang berlaku untuk request.
+     * Get the validation rules that apply to the request.
      */
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string'], // email atau username
             'password' => ['required', 'string'],
         ];
     }
 
     /**
-     * Coba otentikasi kredensial request.
+     * Attempt to authenticate the request's credentials.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -39,11 +39,17 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        // Tentukan apakah input adalah email atau username
+        $field = filter_var($this->email, FILTER_VALIDATE_EMAIL)
+            ? 'email'
+            : 'username';
+
+        // Coba login menggunakan field yang cocok
+        if (! Auth::attempt([$field => $this->email, 'password' => $this->password], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => 'Email/Username atau password salah.',
             ]);
         }
 
@@ -51,7 +57,15 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Pastikan request tidak dibatasi laju.
+     * Get the rate limiting throttle key for the request.
+     */
+    public function throttleKey(): string
+    {
+        return Str::lower($this->email).'|'.$this->ip();
+    }
+
+    /**
+     * Ensure the login request is not rate limited.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -71,13 +85,5 @@ class LoginRequest extends FormRequest
                 'minutes' => ceil($seconds / 60),
             ]),
         ]);
-    }
-
-    /**
-     * Dapatkan kunci pembatas laju untuk request.
-     */
-    public function throttleKey(): string
-    {
-        return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
     }
 }

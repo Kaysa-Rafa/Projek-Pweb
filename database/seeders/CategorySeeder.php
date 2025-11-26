@@ -1,79 +1,82 @@
 <?php
+
 namespace Database\Seeders;
 
-use App\Models\Category;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Category;
 
 class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('categories')->delete();
-
         $categories = [
-            [
-                'name' => 'Maps',
-                'slug' => 'maps',
-                'description' => 'Custom Warcraft III maps and scenarios',
-                'color' => 'blue',
-                'icon' => '🗺️',
-                'sort_order' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
             [
                 'name' => 'Models',
                 'slug' => 'models',
-                'description' => '3D models and character assets',
-                'color' => 'green',
-                'icon' => '🔷',
-                'sort_order' => 2,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'description' => '3D models for units, buildings, doodads, and more.',
+                'icon' => '📦',
+                'color' => 'blue',
             ],
             [
-                'name' => 'Skins & Textures',
-                'slug' => 'skins-textures',
-                'description' => 'Texture skins and appearance modifications',
-                'color' => 'purple',
+                'name' => 'Skins',
+                'slug' => 'skins',
+                'description' => 'Textures for units, heroes, and buildings.',
                 'icon' => '🎨',
-                'sort_order' => 3,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Tools',
-                'slug' => 'tools',
-                'description' => 'Utilities and applications for modding',
-                'color' => 'red',
-                'icon' => '🛠️',
-                'sort_order' => 4,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'color' => 'rose',
             ],
             [
                 'name' => 'Icons',
                 'slug' => 'icons',
-                'description' => 'Custom icons and interface elements',
-                'color' => 'yellow',
-                'icon' => '📱',
-                'sort_order' => 5,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'description' => 'BTN, DISBTN, Passive icons, and more.',
+                'icon' => '🖼️',
+                'color' => 'amber',
             ],
             [
-                'name' => 'Scripts',
-                'slug' => 'scripts',
-                'description' => 'Code scripts and triggers',
+                'name' => 'Spells',
+                'slug' => 'spells',
+                'description' => 'Spell packs, effects, and abilities.',
+                'icon' => '✨',
+                'color' => 'purple',
+            ],
+            [
+                'name' => 'Maps',
+                'slug' => 'maps',
+                'description' => 'Complete maps: RPG, AoS, TD, Melee and more.',
+                'icon' => '🗺️',
+                'color' => 'green',
+            ],
+            [
+                'name' => 'Tools',
+                'slug' => 'tools',
+                'description' => 'Software tools for editing and modding Warcraft.',
+                'icon' => '🛠️',
+                'color' => 'slate',
+            ],
+            [
+                'name' => 'Tutorials',
+                'slug' => 'tutorials',
+                'description' => 'Guides for modeling, mapping, scripting, etc.',
+                'icon' => '📘',
+                'color' => 'cyan',
+            ],
+            [
+                'name' => 'Packs',
+                'slug' => 'packs',
+                'description' => 'Bundled packs of skins, models, icons, and more.',
+                'icon' => '📁',
+                'color' => 'yellow',
+            ],
+            [
+                'name' => 'Scripts & AI',
+                'slug' => 'scripts-ai',
+                'description' => 'JASS, vJASS, Lua scripts and AI systems.',
+                'icon' => '💻',
                 'color' => 'indigo',
-                'icon' => '📜',
-                'sort_order' => 6,
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
         ];
 
-        DB::table('categories')->insert($categories);
+        foreach ($categories as $c) {
+            Category::create($c);
+        }
     }
 }

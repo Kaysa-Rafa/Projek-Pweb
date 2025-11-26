@@ -5,21 +5,36 @@ use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
-// Public Routes
+// PUBLIC
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
-Route::get('/resources', [ResourceController::class, 'index'])->name('resources.index');
-Route::get('/resources/{resource}', [ResourceController::class, 'show'])->name('resources.show');
 
-// Test Routes
-Route::get('/test-data', function () {
-    return [
-        'users' => \App\Models\User::count(),
-        'categories' => \App\Models\Category::count(),
-        'resources' => \App\Models\Resource::count(),
-    ];
+Route::get('/categories', [CategoryController::class, 'index'])
+    ->name('categories.index');
+
+Route::get('/categories/{slug}', [CategoryController::class, 'show'])
+    ->name('categories.show');
+
+// RESOURCES
+Route::get('/resources', [ResourceController::class, 'index'])
+    ->name('resources.index');
+
+// 👇👇👇 IMPORTANT: CREATE HARUS DI ATAS /{resource}
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('/resources/create', [ResourceController::class, 'create'])
+        ->name('resources.create');
+
+    Route::post('/resources', [ResourceController::class, 'store'])
+        ->name('resources.store');
 });
 
-// Auth routes (from Breeze)
+// 👇 INI PENTING: letakkan show PALING BAWAH
+Route::get('/resources/{resource}', [ResourceController::class, 'show'])
+    ->name('resources.show');
+
+// Auth Routes
 require __DIR__.'/auth.php';
