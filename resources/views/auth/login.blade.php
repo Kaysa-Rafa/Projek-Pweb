@@ -1,6 +1,5 @@
 <x-guest-layout>
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-50 dark:bg-gray-900">
-        <!-- Logo -->
         <div class="flex items-center space-x-2 mb-8">
             <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <span class="text-white font-bold text-lg">H</span>
@@ -16,38 +15,35 @@
                 Sign in to your account
             </p>
 
-            <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <!-- Email Address -->
                 <div class="mb-4">
                     <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Email or Username
+                        Email Address
                     </label>
                     <input id="email" 
-                           class="input-primary" 
-                           type="text" 
+                           class="input-primary w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" 
+                           type="email" 
                            name="email" 
                            value="{{ old('email') }}" 
                            required 
                            autofocus 
                            autocomplete="username"
-                           placeholder="Enter your email or username">
+                           placeholder="Enter your email">
                     @error('email')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Password -->
                 <div class="mb-4">
                     <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Password
                     </label>
                     <input id="password" 
-                           class="input-primary" 
+                           class="input-primary w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm" 
                            type="password" 
                            name="password" 
                            required 
@@ -58,39 +54,29 @@
                     @enderror
                 </div>
 
-                <!-- Remember Me -->
                 <div class="block mb-4">
                     <label for="remember_me" class="inline-flex items-center">
-                        <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-hive-600 shadow-sm focus:ring-hive-500" name="remember">
+                        <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:bg-gray-900 dark:border-gray-700" name="remember">
                         <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
                     </label>
                 </div>
 
                 <div class="flex items-center justify-between mb-6">
                     @if (Route::has('password.request'))
-                        <a class="text-sm text-hive-600 dark:text-hive-400 hover:text-hive-500 dark:hover:text-hive-300 underline" href="{{ route('password.request') }}">
+                        <a class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 underline" href="{{ route('password.request') }}">
                             Forgot your password?
                         </a>
                     @endif
 
-                    <a class="text-sm text-hive-600 dark:text-hive-400 hover:text-hive-500 dark:hover:text-hive-300 underline" href="{{ route('register') }}">
+                    <a class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 underline" href="{{ route('register') }}">
                         Create account
                     </a>
                 </div>
 
-                <button type="submit" class="btn-primary w-full">
+                <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                     Sign In
                 </button>
             </form>
-
-            <!-- Demo Info -->
-            <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-3">Demo Accounts:</h3>
-                <div class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                    <div>Admin: admin@hiveworkshop.test / password</div>
-                    <div>User: user1@hiveworkshop.test / password</div>
-                </div>
-            </div>
         </div>
     </div>
 </x-guest-layout>
