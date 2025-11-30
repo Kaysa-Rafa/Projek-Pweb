@@ -1,5 +1,5 @@
 <?php
-// database/migrations/2025_11_26_000000_create_hive_workshop_tables.php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -58,6 +58,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description');
             $table->string('file_path');
+            $table->boolean('is_public')->default(true); 
             $table->integer('file_size')->default(0);
             $table->string('version')->default('1.0');
             $table->integer('download_count')->default(0);
@@ -109,7 +110,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('resource_id')->constrained()->cascadeOnDelete();
-            $table->integer('rating')->between(1, 5);
+            $table->integer('rating');
             $table->timestamps();
 
             $table->unique(['user_id', 'resource_id']);

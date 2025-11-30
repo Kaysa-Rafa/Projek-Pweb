@@ -33,6 +33,6 @@ class RegisteredUserController extends Controller
 
         auth()->login($user);
 
-        return redirect()->route('dashboard'); // FIXED
+        return redirect()->route('dashboard');
     }
 }

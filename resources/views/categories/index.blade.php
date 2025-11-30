@@ -1,4 +1,3 @@
-<!-- resources/views/categories/index.blade.php -->
 @extends('layouts.app')
 
 @section('title', 'Categories - Hive Workshop')
@@ -27,6 +26,7 @@
                         </div>
                     </div>
                     <div class="card-footer bg-transparent text-center">
+                        {{-- PERBAIKAN: href menggunakan object $category (otomatis pakai slug dari model) --}}
                         <a href="{{ route('categories.show', $category) }}" 
                            class="btn btn-primary w-100">
                             Browse Resources

@@ -1,20 +1,33 @@
 <?php
-// app/Models/Resource.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Resource extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'category_id', 'title', 'slug', 'description',
-        'file_path', 'original_filename', 'file_extension', 'file_mime_type',
-        'file_size', 'version', 'download_count', 'view_count', 
-        'is_approved', 'is_featured', 'is_public', 'update_notes'
+        // PENTING: user_id harus ada di sini agar bisa disimpan
+        'user_id', 
+        'category_id', 
+        'title', 
+        'slug', 
+        'description',
+        'file_path', 
+        'original_filename', 
+        'file_extension', 
+        'file_mime_type',
+        'file_size', 
+        'version', 
+        'download_count', 
+        'view_count', 
+        'is_approved', 
+        'is_featured', 
+        'is_public', 
+        'update_notes'
     ];
 
     protected $casts = [
@@ -24,9 +37,25 @@ class Resource extends Model
         'file_size' => 'integer',
     ];
 
-    // ... relationships tetap sama ...
+    // Relasi User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-    // File related methods
+    // Relasi Kategori
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    // Relasi Tags
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    // Helper untuk format ukuran file
     public function getFileSizeFormattedAttribute()
     {
         $bytes = $this->file_size;
@@ -44,24 +73,12 @@ class Resource extends Model
     public function getFileIconAttribute()
     {
         $extension = strtolower($this->file_extension);
-        
         $icons = [
-            'zip' => 'fa-file-archive',
-            'rar' => 'fa-file-archive',
-            '7z' => 'fa-file-archive',
-            'w3x' => 'fa-file-code',
-            'w3m' => 'fa-file-code',
-            'map' => 'fa-map',
-            'jpg' => 'fa-file-image',
-            'jpeg' => 'fa-file-image',
-            'png' => 'fa-file-image',
-            'gif' => 'fa-file-image',
-            'pdf' => 'fa-file-pdf',
-            'doc' => 'fa-file-word',
-            'docx' => 'fa-file-word',
-            'txt' => 'fa-file-alt',
+            'zip' => 'fa-file-archive', 'rar' => 'fa-file-archive', '7z' => 'fa-file-archive',
+            'w3x' => 'fa-map', 'w3m' => 'fa-map', 'map' => 'fa-map',
+            'jpg' => 'fa-file-image', 'png' => 'fa-file-image', 'pdf' => 'fa-file-pdf',
+            'txt' => 'fa-file-alt'
         ];
-
         return $icons[$extension] ?? 'fa-file';
     }
 
@@ -69,10 +86,5 @@ class Resource extends Model
     {
         $this->download_count++;
         $this->save();
-    }
-
-    public function getDownloadUrl()
-    {
-        return route('resources.download', $this);
     }
 }

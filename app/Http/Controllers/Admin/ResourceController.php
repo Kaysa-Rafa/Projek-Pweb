@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str; // Ditambahkan untuk Str::slug()
+use Illuminate\Support\Str;
 
 class ResourceController extends Controller
 {
@@ -78,27 +78,56 @@ class ResourceController extends Controller
     public function store(ResourceStoreRequest $request)
     {
         try {
-            // Pastikan Anda telah membuat model Resource
+            // 1. Definisikan variabel default
+            $filePath = null;
+            $fileSize = 0;
+            $fileType = 'unknown';
+            $originalName = null;
+
+            // 2. Cek apakah ada file yang diupload
+            // PENTING: Pastikan name di form HTML adalah name="resource_file" atau sesuaikan di sini
+            if ($request->hasFile('resource_file')) { 
+                $file = $request->file('resource_file');
+                
+                $originalName = $file->getClientOriginalName();
+                $fileSize = $file->getSize();
+                $fileType = $file->getMimeType();
+                
+                // Buat nama unik agar tidak bentrok
+                $filename = time() . '_' . Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+                
+                // Simpan ke folder storage/app/public/resources
+                $filePath = $file->storeAs('resources', $filename, 'public');
+            } else {
+                // Opsional: Jika file wajib, return error
+                // return redirect()->back()->with('error', 'File wajib diupload!');
+            }
+
+            // 3. Simpan ke Database
             $resource = Resource::create([
                 'title' => $request->title,
-                'slug' => Str::slug($request->title), // Menggunakan Str yang sudah di-import
+                'slug' => Str::slug($request->title),
                 'description' => $request->description,
                 'installation_instructions' => $request->installation_instructions,
                 'user_id' => Auth::id(),
                 'category_id' => $request->category_id,
-                'file_path' => 'temp/path', // Temporary
-                'file_size' => 1024, // Temporary
-                'file_type' => 'application/zip', // Temporary
+                
+                // Simpan path yang didapat dari proses upload di atas
+                'file_path' => $filePath, 
+                'file_size' => $fileSize,
+                'file_type' => $fileType,
+                'original_filename' => $originalName,
+                
                 'version' => $request->version,
-                'is_approved' => true, // Auto-approve for now
+                'is_approved' => true, // Admin upload langsung approved
             ]);
 
             return redirect()->route('resources.show', $resource)
-                ->with('success', 'Resource uploaded successfully!');
+                ->with('success', 'Resource berhasil diupload!');
 
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Upload failed: ' . $e->getMessage())
+                ->with('error', 'Upload gagal: ' . $e->getMessage())
                 ->withInput();
         }
     }

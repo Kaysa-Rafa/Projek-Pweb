@@ -1,11 +1,9 @@
-<!-- resources/views/home.blade.php -->
 @extends('layouts.app')
 
 @section('title', 'Home - Hive Workshop')
 
 @section('content')
 <div class="container py-4">
-    <!-- Hero Section -->
     <div class="text-center mb-5">
         <h1 class="display-4 fw-bold text-primary mb-3">Welcome to Hive Workshop</h1>
         <p class="lead text-muted">Your community hub for sharing and discovering Warcraft III resources</p>
@@ -26,7 +24,6 @@
         </div>
     </div>
 
-    <!-- Stats Section -->
     <div class="row mb-5">
         <div class="col-md-4 mb-3">
             <div class="card text-center h-100">
@@ -65,7 +62,6 @@
         </div>
     </div>
 
-    <!-- Categories Section -->
     <div class="card mb-5">
         <div class="card-header bg-primary text-white">
             <h3 class="card-title mb-0">Browse by Category</h3>
@@ -74,6 +70,7 @@
             <div class="row">
                 @foreach($categories as $category)
                     <div class="col-md-4 col-lg-2 mb-3">
+                        {{-- PERBAIKAN: Link kategori menggunakan slug --}}
                         <a href="{{ route('categories.show', $category) }}" 
                            class="card category-card text-decoration-none text-center h-100">
                             <div class="card-body">
@@ -92,7 +89,6 @@
         </div>
     </div>
 
-    <!-- Recent Resources Section -->
     <div class="card">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h3 class="card-title mb-0">Recently Added</h3>

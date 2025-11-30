@@ -12,7 +12,17 @@ class Category extends Model
     protected $fillable = [
         'name',
         'slug',
+        'description',
+        'icon',
+        'color',
+        'is_active',
+        'sort_order'
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function resources()
     {
