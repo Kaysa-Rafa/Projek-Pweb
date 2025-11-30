@@ -23,7 +23,7 @@ Project ini dibuat sebagai bagian dari tugas **Pemrograman Web (PWeb)**.
 
 ## 🛠️ Teknologi yang Digunakan
 
-* **Framework**: [Laravel 11](https://laravel.com/)
+* **Framework**: [Laravel 12](https://laravel.com/)
 * **Database**: MySQL / SQLite
 * **Frontend**: Blade Templates, Bootstrap 5, FontAwesome
 * **Styling**: Custom CSS dengan Dark Mode support
